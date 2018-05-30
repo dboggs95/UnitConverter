@@ -6,33 +6,62 @@
 
 import React, { Component } from 'react';
 import {
+  AppRegistry,
   Platform,
   StyleSheet,
   Text,
+  TextInput,
+  Picker,
   View
 } from 'react-native';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+class Result extends Component {
+  render() {
+    var fromVal= parseFloat(this.props.val);
+    switch(this.props.unit){
+      case 'meter':
+        var toVal = fromVal * 0.9014;
+        var unit = 'yards';
+        break;
+      default:
+        var toVal = 'Invalid units';
+        var unit = '';
+    }
+    return (
+      <Text style={styles.results}>{toVal} {unit}</Text>
+    );
+  }
+}
 
 type Props = {};
-export default class App extends Component<Props> {
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {text: '', metric: 'meter'};
+  }
+  
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
+        <TextInput style={styles.input}
+          placeholder = "Value"
+          onChangeText={(text) => this.setState({text})} 
+        />
+        <Picker
+          selectedValue={this.state.metric}
+          style={styles.metrics}
+          onValueChange={(itemValue, itemIndex) => this.setState({metric: itemValue})}>
+          <Picker.Item label="centimeters" value="centimeter" />
+          <Picker.Item label="meters" value="meter" />
+          <Picker.Item label="kilometers" value="kilometer" />
+          <Picker.Item label="newtons" value="newton" />
+          <Picker.Item label="celsius" value="celsius" />
+          <Picker.Item label="kelvin" value="kelvin" />
+        </Picker>
+        <Text>
+          =
         </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
+        <Result unit={this.state.metric} val={this.state.text} />
       </View>
     );
   }
@@ -43,16 +72,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'blue',
+    padding: 10,
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  metrics: {
+    height: 50,
+    width: 100,
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  input: {
+    height: 40,
+  },
+  results: {
+    height: 40,
   },
 });
