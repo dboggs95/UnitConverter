@@ -80,27 +80,31 @@ class Result extends Component {
         var toVal = 'Invalid units';
         var unit = '';
     }
-    var toVal3 = toVal.toFixed(3);
+    //Up to three decimal places.
+    //Could not make it work right.
+    /*var toVal3 = toVal.toFixed(3);
     if(toVal3%1 == 0)
     {
       var toValRound = toVal.toFixed(0);
-    }
-    else if(toVal3%0.1 == 0)
+    }*/
+    //Equalities don't work here, but assuming the smallest 
+    //final digit is one tells us the smallest possible modulus.
+    /*else if(toVal3%0.1 < 0.01) 
     {
       var toValRound = toVal.toFixed(1);
     }
-    else if(toVal3%0.01 == 0)
+    else if(toVal3%0.01 < 0.001)
     {
       var toValRound = toVal.toFixed(2);
     }
     else
     {
       var toValRound = toVal3;
-    }
+    }*/
     
     
     return (
-      <Text style={styles.results}>{toValRound} {unit}</Text>
+      <Text style={styles.results}>{toVal.toFixed(3)} {unit}</Text>
     );
   }
 }
